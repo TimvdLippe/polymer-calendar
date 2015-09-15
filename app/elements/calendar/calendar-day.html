@@ -1,0 +1,42 @@
+<dom-module id="x-calendar-day">
+  <style>
+    :host {
+      display: block;
+      height: 100%;
+    }
+
+    .paper-header {
+      text-align: center;
+    }
+  </style>
+  <template>
+    <paper-header-panel class="flex">
+      <div class="paper-header">{{title}}</div>
+      <iron-list items="[[hours]]" as="hour">
+        <template>
+          <div>
+            <x-calendar-hour hour="[[hour]]"></x-calendar-hour>
+          </div>
+        </template>
+      </iron-list>
+    </paper-header-panel>
+  </template>
+  <script>
+    Polymer({
+      is: 'x-calendar-day',
+      properties: {
+        title: {
+          type: String,
+          reflectToAttribute: true
+        },
+        hours: {
+          type: Array,
+          readOnly: true,
+          value: function() {
+            return Array.apply(null, {length: 24}).map(Number.call, Number);
+          }
+        }
+      }
+    });
+  </script>
+</dom-module>

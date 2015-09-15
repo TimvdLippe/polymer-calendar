@@ -1,0 +1,38 @@
+<dom-module id="x-calendar-hour">
+  <style>
+    :host {
+      display: flex;
+      border: black 1px solid;
+      min-height: 50px;
+    }
+    #hour {
+      flex: 1;
+      border-right: black 1px solid;
+    }
+    #hour span {
+      margin-left: auto;
+      margin-right: auto;
+    }
+    #events {
+      flex: 5;
+    }
+  </style>
+  <template>
+    <div id="hour">
+      <span>[[hour]]</span>
+    </div>
+    <div id="events">
+      <span>test</span>
+    </div>
+  </template>
+  <script>
+    Polymer({
+      is: 'x-calendar-hour',
+      properties: {
+        hour: {
+          type: Number
+        }
+      }
+    });
+  </script>
+</dom-module>

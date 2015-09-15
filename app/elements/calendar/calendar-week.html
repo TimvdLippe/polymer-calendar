@@ -1,0 +1,38 @@
+<dom-module id="x-calendar-week">
+  <style>
+    :host {
+      display: block;
+    }
+    div {
+      display: flex;
+    }
+    x-calendar-day {
+      flex: 1;
+      margin-left: 8px;
+    }
+    x-calendar-day:last-of-type {
+      margin-right: 8px;
+    }
+  </style>
+  <template>
+    <div>
+      <template is="dom-repeat" items="[[days]]">
+        <x-calendar-day title="{{item}}"></x-calendar-day>
+      </template>
+    </div>
+  </template>
+  <script>
+    Polymer({
+      is: 'x-calendar-week',
+      properties: {
+        days: {
+          type: Array,
+          readOnly: true,
+          value: function() {
+            return ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+          }
+        }
+      }
+    });
+  </script>
+</dom-module>
