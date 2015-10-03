@@ -1,29 +1,26 @@
 <dom-module id="x-calendar-hour">
-  <style>
-    :host {
-      display: flex;
-      border: black 1px solid;
-      min-height: 50px;
-    }
-    #hour {
-      flex: 1;
-      border-right: black 1px solid;
-    }
-    #hour span {
-      margin-left: auto;
-      margin-right: auto;
-    }
-    #events {
-      flex: 5;
-    }
-  </style>
   <template>
-    <div id="hour">
+    <style>
+      :host {
+        display: flex;
+        border-bottom: var(--divider-color) 1px solid;
+        min-height: 50px;
+        margin-bottom: 2px;
+      }
+      .hour {
+        border-right: var(--divider-color) 1px solid;
+        flex: 1;
+      }
+      .events {
+        flex: 7;
+      }
+    </style>
+    <paper-item class="hour">
       <span>[[hour]]</span>
-    </div>
-    <div id="events">
+    </paper-item>
+    <paper-item class="events">
       <span>test</span>
-    </div>
+    </paper-item>
   </template>
   <script>
     Polymer({

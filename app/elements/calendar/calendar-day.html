@@ -1,24 +1,40 @@
 <dom-module id="x-calendar-day">
-  <style>
-    :host {
-      display: block;
-      height: 100%;
-    }
-
-    .paper-header {
-      text-align: center;
-    }
-  </style>
   <template>
+    <style>
+      :host {
+        display: block;
+        -webkit-box-shadow: 0px 4px 5px 0px rgba(0,0,0,0.75);
+        -moz-box-shadow: 0px 4px 5px 0px rgba(0,0,0,0.75);
+        box-shadow: 0px 4px 5px 0px rgba(0,0,0,0.75);
+      }
+      .paper-header {
+        background-color: var(--default-primary-color);
+        color: var(--text-primary-color);
+        height: 48px;
+        text-align: center;
+        margin-bottom: 2px;
+        margin-top: 5px;
+      }
+      :host:focus .paper-header {
+        background-color: var(--light-primary-color);
+      }
+      span {
+        display: block;
+        padding-top: 14px;
+      }
+    </style>
+    <iron-a11y-keys keys="up down" on-keys-pressed="next"></iron-a11y-keys>
     <paper-header-panel class="flex">
-      <div class="paper-header">{{title}}</div>
-      <iron-list items="[[hours]]" as="hour">
-        <template>
-          <div>
-            <x-calendar-hour hour="[[hour]]"></x-calendar-hour>
-          </div>
+      <template is="dom-if" if="{{!hidetitle}}">
+        <x-calendar-day-header class="paper-header" title="{{title}}"></x-calendar-day-header>
+      </template>
+      <div id="list">
+        <template is="dom-repeat" items="[[hours]]" as="hour">
+            <div>
+              <x-calendar-hour hour="[[hour]]" tabindex="-1" on-tap="handleFocus"></x-calendar-hour>
+            </div>
         </template>
-      </iron-list>
+      </div>
     </paper-header-panel>
   </template>
   <script>
@@ -29,13 +45,44 @@
           type: String,
           reflectToAttribute: true
         },
+        hidetitle: {
+          type: Boolean,
+          value: function() {
+            return false;
+          }
+        },
         hours: {
           type: Array,
           readOnly: true,
           value: function() {
-            return Array.apply(null, {length: 24}).map(Number.call, Number);
+            return Array.apply(null, {length: 24})
+                    .map(Number.call, Number)
+                    .map(String);
           }
         }
+      },
+      ready: function() {
+        this.currentTarget = this.$.header;
+        this.currentTargetIndex = 0;
+      },
+      handleFocus: function(event) {
+        this.currentTargetIndex = parseInt(event.model.hour);
+        this.updateCurrentTarget();
+      },
+      next: function(e) {
+        e.preventDefault();
+        if (this.currentTarget === this.$.header) {
+          this.currentTargetIndex = 0;
+        }
+        else {
+          var diff = e.detail.keyboardEvent.keyIdentifier === 'Down' ? 1 : -1;
+          this.currentTargetIndex = Math.max(0, Math.min(23, this.currentTargetIndex + diff));
+        }
+        this.updateCurrentTarget();
+        this.currentTarget.focus();
+      },
+      updateCurrentTarget: function() {
+        this.currentTarget = this.querySelectorAll('x-calendar-hour')[this.currentTargetIndex];
       }
     });
   </script>

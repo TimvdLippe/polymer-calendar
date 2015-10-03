@@ -1,0 +1,22 @@
+<dom-module id="x-calendar-day-header">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <div class="paper-header">
+      <span>{{title}}</span>
+    </div>
+  </template>
+  <script>
+    Polymer({
+      is: 'x-calendar-day-header',
+      properties: {
+        title: {
+          type: String
+        }
+      }
+    });
+  </script>
+</dom-module>
