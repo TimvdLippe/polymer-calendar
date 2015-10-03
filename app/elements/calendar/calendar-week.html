@@ -17,11 +17,12 @@
     </style>
     <div>
       <template is="dom-repeat" items="[[days]]">
-        <x-calendar-day title="{{item}}" tabIndex="0" hidetitle></x-calendar-day>
+        <x-calendar-day title="{{item}}" tabIndex="0" events="{{getEvents(index)}}" hidetitle></x-calendar-day>
       </template>
     </div>
   </template>
   <script>
+  (function() {
     Polymer({
       is: 'x-calendar-week',
       properties: {
@@ -31,8 +32,15 @@
           value: function() {
             return ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
           }
+        },
+        events: {
+          type: Array
         }
+      },
+      getEvents: function(index) {
+        return this.events[index];
       }
     });
+  })();
   </script>
 </dom-module>

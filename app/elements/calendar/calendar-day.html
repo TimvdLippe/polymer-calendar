@@ -31,13 +31,14 @@
       <div id="list">
         <template is="dom-repeat" items="[[hours]]" as="hour">
             <div>
-              <x-calendar-hour hour="[[hour]]" tabindex="-1" on-tap="handleFocus"></x-calendar-hour>
+              <x-calendar-hour hour="[[hour]]" tabindex="-1" on-tap="handleFocus" events="{{getEvents(hour)}}"></x-calendar-hour>
             </div>
         </template>
       </div>
     </paper-header-panel>
   </template>
   <script>
+  (function() {
     Polymer({
       is: 'x-calendar-day',
       properties: {
@@ -59,11 +60,19 @@
                     .map(Number.call, Number)
                     .map(String);
           }
+        },
+        events: {
+          type: Array
         }
       },
       ready: function() {
         this.currentTarget = this.$.header;
         this.currentTargetIndex = 0;
+      },
+      getEvents: function(hour) {
+        return this.events.filter(function(event) {
+          return event.starthour <= hour && event.endhour >= hour;
+        });
       },
       handleFocus: function(event) {
         this.currentTargetIndex = parseInt(event.model.hour);
@@ -85,5 +94,6 @@
         this.currentTarget = this.querySelectorAll('x-calendar-hour')[this.currentTargetIndex];
       }
     });
+  })();
   </script>
 </dom-module>

@@ -14,22 +14,83 @@
       .events {
         flex: 7;
       }
+      .event {
+        display: block;
+        background-color: blue;
+        width: 100%;
+      }
+      .event[start="1"] {
+        margin-top: 12px;
+      }
+      .event[start="2"] {
+        margin-top: 25px;
+      }
+      .event[start="3"] {
+        margin-top: 37px;
+      }
+      .event[height="1"] {
+        height: 12px;
+      }
+      .event[height="2"] {
+        height: 25px;
+      }
+      .event[height="3"] {
+        height: 37px;
+      }
+      .event[height="4"] {
+        height: 50px
+      }
     </style>
     <paper-item class="hour">
       <span>[[hour]]</span>
     </paper-item>
-    <paper-item class="events">
-      <span>test</span>
-    </paper-item>
+    <div class="events">
+      <template is="dom-repeat" items="{{_events}}" as="event">
+        <div class="event" start$="{{event.startquarter}}" end$="{{event.endquarter}}" height$="{{getHeight(event)}}">
+          <div>{{event.title}}</div>
+        </div>
+      </template>
+    </div>
   </template>
   <script>
+  (function() {
+    function copy(o) {
+      var out, v, key;
+      out = Array.isArray(o) ? [] : {};
+      for (key in o) {
+        v = o[key];
+        out[key] = (typeof v === "object") ? copy(v) : v;
+      }
+      return out;
+    }
     Polymer({
       is: 'x-calendar-hour',
       properties: {
         hour: {
           type: Number
+        },
+        events: {
+          type: Array,
+          observer: 'fetchCorrectEvents'
         }
+      },
+      fetchCorrectEvents: function() {
+        var filter = function(event) {
+          return (event.endhour != this.hour) || (event.endquarter > 0);
+        }.bind(this);
+
+        var map = function(event) {
+          event.startquarter = (event.starthour == this.hour) ? event.startquarter : 0;
+          event.endquarter = (event.endhour == this.hour) ? event.endquarter : 4;
+          return event;
+        }.bind(this);
+
+        this._events = copy(this.events).filter(filter).map(map);
+      },
+      getHeight: function(event) {
+        return event.endquarter - event.startquarter;
       }
     });
+  })();
   </script>
 </dom-module>

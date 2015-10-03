@@ -5,11 +5,45 @@
         display: block;
       }
     </style>
-    <x-calendar-week></x-calendar-week>
+    <x-calendar-week events="{{events}}"></x-calendar-week>
   </template>
   <script>
     Polymer({
-      is: 'x-calendar'
+      is: 'x-calendar',
+      properties: {
+        events: {
+          type: Array,
+          value: function() {
+            return [
+              [{
+                title: "blabla",
+                starthour: 18,
+                startquarter: 2,
+                endhour: 20,
+                endquarter: 0
+              }],
+              [{
+                title: "Tuesday",
+                starthour: 19,
+                startquarter: 1,
+                endhour: 19,
+                endquarter: 3
+              }],
+              [{
+                title: "Wednesday",
+                starthour: 17,
+                startquarter: 3,
+                endhour: 20,
+                endquarter: 2
+              }],
+              [],
+              [],
+              [],
+              []
+            ];
+          }
+        }
+      }
     });
   </script>
 </dom-module>
